@@ -16,7 +16,7 @@ const MovieList = (props) => {
     useEffect(() => {
 
         // get movie data from api
-        axios.get('http://www.mocky.io/v2/5af935ab320000221d86afe6')
+        axios.get('https://www.mocky.io/v2/5af935ab320000221d86afe6')
             .then((res) => {
                 // get all genres
                 let list = new Set();
@@ -52,14 +52,23 @@ const MovieList = (props) => {
 
     // customize carousel button
     const ButtonGroup = ({ next, previous, ...rest }) => {
-        console.log(rest);
-        const { carouselState: { slidesToShow, totalItems } } = rest;
+        const { carouselState: { currentSlide,slidesToShow, totalItems } } = rest;
         return (
             <>
                 {totalItems <= slidesToShow ? null :
                     <div className="carousel-button-group">
-                        <button className='react-multiple-carousel__arrow react-multiple-carousel__arrow--left' onClick={() => previous()} />
-                        <button className='react-multiple-carousel__arrow react-multiple-carousel__arrow--right' onClick={() => next()} />
+                        <button 
+                            className='react-multiple-carousel__arrow react-multiple-carousel__arrow--left' 
+                            onClick={() => previous()} 
+                            disabled={currentSlide === 0}
+                            aria-label='prev slide'
+                        />
+                        <button 
+                            className='react-multiple-carousel__arrow react-multiple-carousel__arrow--right' 
+                            onClick={() => next()} 
+                            disabled={currentSlide === totalItems}
+                            aria-label='prev slide'
+                        />
                     </div>
                 }
             </>
@@ -82,7 +91,7 @@ const MovieList = (props) => {
             <div className='carousel-box'>
                 <Carousel
                     responsive={responsive}
-                    infinite={true}
+                    // infinite={true}
                     arrows={false}
                     renderButtonGroupOutside={true}
                     customButtonGroup={<ButtonGroup />}
